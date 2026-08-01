@@ -1,0 +1,10 @@
+# 出门管家机器人 - Python 依赖
+# 本地开发/测试用。开发板运行时 Dora/pyarrow 已预装。
+
+# 语音输入(讯飞ASR)
+sounddevice>=0.4.6
+numpy>=1.24
+websocket-client>=1.6
+
+# 语音反馈(后续TTS用,先占位)
+# edge-tts>=6.1

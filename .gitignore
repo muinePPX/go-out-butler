@@ -18,5 +18,11 @@ env/
 .DS_Store
 Thumbs.db
 
-# 生成物（按需保留，体积大可取消注释）
+# 敏感配置(讯飞Key,切勿上传!)
+config/xunfei.json
+
+# 录音测试文件
+*.wav
+
+# 生成物(按需保留,体积大可取消注释)
 # *.pptx

@@ -1,0 +1,8 @@
+{
+  "_说明": "复制本文件为 xunfei.json 并填入你的讯飞密钥。获取步骤见 docs/讯飞ASR接入说明.md",
+  "appid": "在此填讯飞APPID(控制台创建应用后获取)",
+  "api_key": "在此填APIKey(32位)",
+  "api_secret": "在此填APISecret(32位)",
+  "language": "zh_cn",
+  "accent": "mandarin"
+}

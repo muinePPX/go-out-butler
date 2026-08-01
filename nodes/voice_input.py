@@ -1,30 +1,51 @@
-"""语音输入节点 - Layer 0 用 stdin 文字输入替代 ASR
+"""语音输入节点
 
-现场接入真实 ASR 时，替换 read_stdin_nonblocking() 为：
-  采集麦克风音频 -> ASR 识别 -> 返回文字
+有讯飞密钥 -> 麦克风录音 + 讯飞识别
+无密钥或识别失败 -> 降级为终端文字输入(stdin)
+
+输出: user_text (纯字符串, 如 "我要去运动")
+触发: dataflow.yml 中每 500ms 的 tick 信号(仅首次触发录音,之后跳过)
 """
+import json
+import os
 import sys
+
+# 让节点能找到 lib/ 目录下的模块
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "lib"))
+
 import pyarrow as pa
 from dora import Node
 
+from asr_xunfei import has_key, listen
+
 node = Node()
-print("[voice_input] 节点已启动，请在终端输入出行场景（如：运动 / 开会 / 上课）", flush=True)
+
+# 是否启用语音模式
+USE_VOICE = has_key()
+if USE_VOICE:
+    print("[voice_input] 已检测到讯飞配置,启用语音输入模式", flush=True)
+    print("[voice_input] 启动后请直接说话,说完停顿2秒自动识别", flush=True)
+else:
+    print("[voice_input] 未检测到讯飞配置,使用文字输入模式", flush=True)
+    print("[voice_input] (配置语音见 docs/讯飞ASR接入说明.md)", flush=True)
+
+# 标志位: 防止 tick 重复触发录音。首次录音成功后不再触发。
+_listened = False
 
 
-def read_stdin_nonblocking():
-    """非阻塞读取 stdin，无数据返回 None。
-
-    开发板(Linux)上用 select 实现非阻塞；
-    Windows 本地不支持 select stdin，返回 None（不会卡住）。
-    """
-    try:
-        import select
-        if select.select([sys.stdin], [], [], 0)[0]:
-            line = sys.stdin.readline().strip()
-            return line if line else None
-    except (OSError, ValueError):
-        pass
-    return None
+def get_text():
+    """获取用户输入。语音模式优先,失败降级文字。"""
+    global _listened
+    if USE_VOICE:
+        try:
+            text = listen()
+            if text:
+                return text
+            print("[voice_input] 语音未识别到内容,降级为文字输入", flush=True)
+        except Exception as e:
+            print(f"[voice_input] 语音识别异常: {e}，降级为文字输入", flush=True)
+    # 降级: 终端手动输入
+    return input("请输入出行场景(如:我要去运动)> ").strip()
 
 
 for event in node:
@@ -32,10 +53,15 @@ for event in node:
         continue
     if event["id"] != "tick":
         continue
+    if _listened:
+        # 已完成一次输入,后续 tick 跳过(避免重复录音)
+        # 如需再次输入,重启 dataflow 即可
+        continue
 
-    # Layer 0: 非阻塞读取终端输入
-    # 现场替换为：采集音频 -> ASR 语音识别
-    text = read_stdin_nonblocking()
+    _listened = True   # 标记,防止重入
+    text = get_text()
     if text:
-        print(f"[voice_input] 识别到输入: {text}", flush=True)
+        print(f"[voice_input] 输入完成: {text}", flush=True)
+        # 保持与原版一致: 发送纯字符串,兼容 mclaw_decision
         node.send_output("user_text", pa.array([text]))
+        # _listened 保持 True,不再触发。机器人将开始执行任务。
