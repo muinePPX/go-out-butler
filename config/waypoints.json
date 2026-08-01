@@ -1,0 +1,9 @@
+{
+  "point_water": {"x": 1.0, "y": 0.0, "description": "水杯存放点"},
+  "point_towel": {"x": 1.0, "y": 1.0, "description": "毛巾存放点"},
+  "point_keys": {"x": 0.0, "y": 1.0, "description": "钥匙存放点"},
+  "point_badge": {"x": 0.0, "y": 2.0, "description": "工卡存放点"},
+  "point_book": {"x": 2.0, "y": 0.0, "description": "课本存放点"},
+  "point_pen": {"x": 2.0, "y": 1.0, "description": "笔袋存放点"},
+  "point_door": {"x": 0.0, "y": 0.0, "description": "门口（出发/返回点）"}
+}

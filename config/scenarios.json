@@ -1,0 +1,20 @@
+{
+  "运动": {
+    "items": [
+      {"name": "水杯", "waypoint": "point_water", "qr_code": "QR_WATER"},
+      {"name": "毛巾", "waypoint": "point_towel", "qr_code": "QR_TOWEL"}
+    ]
+  },
+  "开会": {
+    "items": [
+      {"name": "车钥匙", "waypoint": "point_keys", "qr_code": "QR_KEYS"},
+      {"name": "工卡", "waypoint": "point_badge", "qr_code": "QR_BADGE"}
+    ]
+  },
+  "上课": {
+    "items": [
+      {"name": "课本", "waypoint": "point_book", "qr_code": "QR_BOOK"},
+      {"name": "笔袋", "waypoint": "point_pen", "qr_code": "QR_PEN"}
+    ]
+  }
+}

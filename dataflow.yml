@@ -1,0 +1,55 @@
+nodes:
+  - id: voice_input
+    path: /data/local/robot/nodes/voice_input.py
+    inputs:
+      tick: dora/timer/millis/500
+    outputs:
+      - user_text
+
+  - id: mclaw_decision
+    path: /data/local/robot/nodes/mclaw_decision.py
+    inputs:
+      user_text: voice_input/user_text
+    outputs:
+      - task_plan
+
+  - id: task_scheduler
+    path: /data/local/robot/nodes/task_scheduler.py
+    inputs:
+      task_plan: mclaw_decision/task_plan
+      nav_done: nav_control/nav_done
+      item_result: camera_perception/item_result
+      arm_done: arm_control/arm_done
+    outputs:
+      - nav_cmd
+      - camera_cmd
+      - arm_cmd
+      - final_status
+
+  - id: nav_control
+    path: /data/local/robot/nodes/nav_control.py
+    inputs:
+      nav_cmd: task_scheduler/nav_cmd
+    outputs:
+      - nav_done
+
+  - id: camera_perception
+    path: /data/local/robot/nodes/camera_perception.py
+    inputs:
+      camera_cmd: task_scheduler/camera_cmd
+    outputs:
+      - item_result
+
+  - id: arm_control
+    path: /data/local/robot/nodes/arm_control.py
+    inputs:
+      arm_cmd: task_scheduler/arm_cmd
+    outputs:
+      - arm_done
+
+  - id: feedback
+    path: /data/local/robot/nodes/feedback.py
+    inputs:
+      final_status: task_scheduler/final_status
+    outputs:
+      - response

@@ -1,0 +1,22 @@
+# 依赖
+node_modules/
+package-lock.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# IDE/编辑器
+.idea/
+*.log
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# 生成物（按需保留，体积大可取消注释）
+# *.pptx
