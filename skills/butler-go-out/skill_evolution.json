@@ -1,0 +1,8 @@
+{
+  "adaptations": [],
+  "preferences": [],
+  "failures": [],
+  "notes": [
+    "初始版本:支持运动/开会/上课三个场景,现场需校准scenarios.json点位"
+  ]
+}
