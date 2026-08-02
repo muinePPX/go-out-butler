@@ -6,5 +6,6 @@ sounddevice>=0.4.6
 numpy>=1.24
 websocket-client>=1.6
 
-# 语音反馈(后续TTS用,先占位)
-# edge-tts>=6.1
+# 语音反馈(edge-tts,微软免费TTS,无需API Key)
+edge-tts>=6.1
+miniaudio>=1.59

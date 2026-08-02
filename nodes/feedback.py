@@ -1,18 +1,33 @@
-"""反馈节点 - Layer 0 用 print 文字替代 TTS
+"""反馈节点 - TTS语音播报 + print文字降级
 
-现场接入时，替换 speak() 为真实 TTS：
-  final_status -> 组织话术 -> TTS 语音播报
+有edge-tts依赖 -> 语音播报反馈话术
+无依赖或播报失败 -> print文字保底(演示不中断)
+
+输入: final_status (JSON: {"success":[...], "failed":[...], "total":N})
+输出: response (纯字符串, 反馈话术)
 """
 import json
+import os
+import sys
+
+# 让节点能找到 lib/ 目录下的模块
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "lib"))
+
 import pyarrow as pa
 from dora import Node
+from tts_edge import has_tts, speak
 
 node = Node()
-print("[feedback] 反馈节点已启动 (Layer 0: print)", flush=True)
+
+USE_TTS = has_tts()
+if USE_TTS:
+    print("[feedback] 已启用TTS语音播报", flush=True)
+else:
+    print("[feedback] 未启用TTS,使用文字输出 (pip install edge-tts miniaudio 可启用)", flush=True)
 
 
 def build_message(status):
-    """根据最终状态组织反馈话术"""
+    """根据最终状态组织反馈话术。"""
     success = status.get("success", [])
     failed = status.get("failed", [])
 
@@ -34,7 +49,14 @@ for event in node:
     status = json.loads(event["value"].to_pylist()[0])
     msg = build_message(status)
 
-    # Layer 0: 文字输出
-    # 现场替换为：TTS 语音合成 + 播放
+    # 始终打印文字(保底 + 调试可见)
     print(f"[feedback] {msg}", flush=True)
+
+    # 有TTS则语音播报,失败不影响演示
+    if USE_TTS:
+        ok = speak(msg)
+        if not ok:
+            print("[feedback] TTS播报失败,请看上方文字", flush=True)
+
+    # 保持与原版一致: 发送纯字符串
     node.send_output("response", pa.array([msg]))
