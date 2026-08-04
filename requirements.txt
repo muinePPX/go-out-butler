@@ -9,3 +9,7 @@ websocket-client>=1.6
 # 语音反馈(edge-tts,微软免费TTS,无需API Key)
 edge-tts>=6.1
 miniaudio>=1.59
+
+# 相机视觉(二维码识别)
+opencv-python>=4.8
+pyzbar>=0.1.9

@@ -1,8 +1,13 @@
 {
-  "adaptations": [],
-  "preferences": [],
-  "failures": [],
-  "notes": [
-    "初始版本:支持运动/开会/上课三个场景,现场需校准scenarios.json点位"
+  "adaptation_summary": [
+    "根据出行场景(运动/开会/上课)生成物品清单,匹配现场物品点位和二维码。",
+    "支持精确匹配和模糊匹配(输入'我要去运动'匹配'运动')。"
+  ],
+  "user_preferences": [],
+  "known_failures": [
+    "场景关键词未配置时无法匹配,需在config/scenarios.json补充同义词。"
+  ],
+  "runtime_notes": [
+    "现场需按实际场地校准config/scenarios.json中的点位标识和二维码。"
   ]
 }
