@@ -26,3 +26,27 @@ config/xunfei.json
 
 # 生成物(按需保留,体积大可取消注释)
 # *.pptx
+
+# 现场调试临时脚本/产物(不入库)
+tmp_*
+*.jpg
+*.jpeg
+test_qr/
+_test_*.py
+view_*.py
+analyze_detection.py
+arm_probe.py
+find_colors.py
+improved_detect.py
+probe_env.py
+ros_check.py
+detect_calibrated.py
+color_detect_2red.jpg
+color_sort_result.jpg
+hsv_v2_result.jpg
+yolo_result_onsite.jpg
+scene_detect_apriltag.jpg
+marker-check-current.jpg
+calibrated_result.jpg
+raw_rgb_view.jpg
+diagnose_*.jpg

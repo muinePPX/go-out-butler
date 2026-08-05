@@ -19,10 +19,12 @@ nodes:
       task_plan: mclaw_decision/task_plan
       nav_done: nav_control/nav_done
       item_result: camera_perception/item_result
+      servo_result: visual_servoing/servo_result
       arm_done: arm_control/arm_done
     outputs:
       - nav_cmd
       - camera_cmd
+      - servo_cmd
       - arm_cmd
       - final_status
 
@@ -30,11 +32,28 @@ nodes:
     path: /data/local/robot/nodes/nav_control.py
     inputs:
       nav_cmd: task_scheduler/nav_cmd
+      servo_vel: visual_servoing/servo_vel
     outputs:
       - nav_done
 
+  - id: visual_servoing
+    path: /data/local/robot/nodes/visual_servoing.py
+    env:
+      CAMERA_SOURCE: ros
+      ROS_MASTER_URI: http://127.0.0.1:11311
+      ROS_IP: 10.45.162.231
+    inputs:
+      servo_cmd: task_scheduler/servo_cmd
+    outputs:
+      - servo_vel
+      - servo_result
+
   - id: camera_perception
     path: /data/local/robot/nodes/camera_perception.py
+    env:
+      CAMERA_SOURCE: ros
+      ROS_MASTER_URI: http://127.0.0.1:11311
+      ROS_IP: 10.45.162.231
     inputs:
       camera_cmd: task_scheduler/camera_cmd
     outputs:

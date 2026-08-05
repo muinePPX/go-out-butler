@@ -16,5 +16,10 @@
       {"name": "课本", "waypoint": "point_book", "qr_code": "QR_BOOK"},
       {"name": "笔袋", "waypoint": "point_pen", "qr_code": "QR_PEN"}
     ]
+  },
+  "抓取颜色物体": {
+    "items": [
+      {"name": "黄色圆圈", "waypoint": "point_table", "target_colors": ["yellow"]}
+    ]
   }
 }

@@ -24,12 +24,25 @@ print(f"[mclaw_decision] 已加载场景配置: {list(SCENARIOS.keys())}", flush
 node = Node()
 
 
+# 场景别名关键词: 支持自然语言说法, 覆盖常见口语
+_SCENE_KEYWORDS = {
+    "抓取颜色物体": ["红色", "蓝色", "绿色", "黄色", "颜色", "物体", "捡", "抓", "球", "圆圈", "圆环", "圆形", "圆"],
+    "运动": ["运动", "水杯", "毛巾", "喝水", "跑步", "健身"],
+    "开会": ["开会", "钥匙", "工卡", "会议", "上班"],
+    "上课": ["上课", "课本", "笔袋", "读书", "书包"],
+}
+
+
 def decide(user_text):
-    """Layer 0: 规则查表。现场替换为 M-Claw API 调用。"""
+    """Layer 0: 规则查表 (精确场景名 + 自然语言关键词)。现场替换为 M-Claw API 调用。"""
     # 精确匹配
     if user_text in SCENARIOS:
         return SCENARIOS[user_text]["items"], user_text
-    # 模糊匹配：输入包含场景关键词即可
+    # 关键词匹配: 场景名本身或其别名出现即命中
+    for key, words in _SCENE_KEYWORDS.items():
+        if key in user_text or any(w in user_text for w in words):
+            return SCENARIOS[key]["items"], key
+    # 兜底: 场景名子串匹配 (兼容完整句子, 如 "我要去运动")
     for key in SCENARIOS:
         if key in user_text:
             return SCENARIOS[key]["items"], key

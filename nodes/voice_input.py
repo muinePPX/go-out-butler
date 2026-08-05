@@ -44,6 +44,15 @@ def get_text():
             print("[voice_input] 语音未识别到内容,降级为文字输入", flush=True)
         except Exception as e:
             print(f"[voice_input] 语音识别异常: {e}，降级为文字输入", flush=True)
+    # 降级: 优先读文件输入(用于 daemon 模式/自动化测试, 文件存在则用之)
+    # 正常交互模式(dora run 前台) 没有该文件, 仍走终端输入
+    try:
+        with open("/tmp/scene_input.txt", "r", encoding="utf-8") as f:
+            text = f.read().strip()
+        if text:
+            return text
+    except Exception:
+        pass
     # 降级: 终端手动输入
     return input("请输入出行场景(如:我要去运动)> ").strip()
 

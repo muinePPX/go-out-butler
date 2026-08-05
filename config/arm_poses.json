@@ -1,0 +1,10 @@
+{
+  "joint_names": ["joint1", "joint2", "joint3", "joint4", "joint5"],
+  "home": [0.0, 0.0, 0.0, 0.0, 0.0],
+  "pre_grasp": [0.0, 0.0, 0.0, 0.0, 0.0],
+  "grasp": [0.0, 0.0, 0.0, 0.0, 0.0],
+  "lift": [0.0, 0.0, 0.0, 0.0, 0.0],
+  "drop": [0.0, 0.0, 0.0, 0.0, 0.0],
+  "gripper_open": 0.0,
+  "gripper_close": 0.5
+}

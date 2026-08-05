@@ -5,5 +5,6 @@
   "point_badge": {"x": 0.0, "y": 2.0, "description": "工卡存放点"},
   "point_book": {"x": 2.0, "y": 0.0, "description": "课本存放点"},
   "point_pen": {"x": 2.0, "y": 1.0, "description": "笔袋存放点"},
-  "point_door": {"x": 0.0, "y": 0.0, "description": "门口（出发/返回点）"}
+  "point_door": {"x": 0.0, "y": 0.0, "description": "门口（出发/返回点）"},
+  "point_table": {"x": 0.8, "y": 0.0, "description": "演示桌（颜色物体放置点，门口前方 0.8m）"}
 }
